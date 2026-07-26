@@ -16,18 +16,18 @@ using namespace std;
 
 
 class Win{
-private:
-public:
-int a=0;
-Win(){
+    private:
+    public:
+    int a=0;
+    Win(){
 
-}
-Win(int x)
-{
-   this->a=x;
-}
+    }
+    Win(int x)
+    {
+    this->a=x;
+    }
 
-//copy constructor....
+    //copy constructor....
     Win(Win &obj,int y)
     {
         this->a=obj.a*10+y;
