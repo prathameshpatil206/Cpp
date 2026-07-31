@@ -1,5 +1,4 @@
-#include<iostream>
-#include<stack>
+#include<bits/stdc++.h>
 using namespace std;
 
 int main()
@@ -11,8 +10,10 @@ int main()
 
     while(!s.empty())
     {
-        cout<<s.top()<<'\t';
+        cout<<s.top()<<" ";
         s.pop();
     }
+    cout<<endl;
+    
     return 0;
 }
