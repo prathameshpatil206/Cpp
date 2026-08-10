@@ -3,7 +3,7 @@ using namespace std;
 
 
 class Node{
-    public :
+public:
     int data;
     Node* left;
     Node* right;
@@ -11,121 +11,128 @@ class Node{
     Node(int val)
     {
         data=val;
-        left=right=NULL;
+        left=NULL;
+        right=NULL;
     }
 };
 
-static int idx=-1;
 
-Node* buildTree(vector<int> a)
-{   
-    idx++;
-
-    if(a[idx]==-1)
+//TC:O(n)
+Node* create(vector<int>& preorder,int* i)
+{
+    (*i)++;
+    if(preorder[*i]==-1)
+    {
         return NULL;
+    }
+
+    Node* curr=new Node(preorder[*i]);
+
+    curr->left=create(preorder,i);
+    curr->right=create(preorder,i);
+
+    return curr;
+}
+
+
+//TC:O(n)
+void preOrderTraversal(Node* root)
+{
+    if(root==NULL)
+    {
+        return;
+    }
+
+    cout<<root->data<<" ";
+
+    preOrderTraversal(root->left);
+    preOrderTraversal(root->right);
+
+}
+
+
+//TC:O(n)
+void inOrderTraversal(Node* root)
+{
+    if(root==NULL)
+    {
+        return;
+    }
+
+    inOrderTraversal(root->left);
+
+    cout<<root->data<<" ";
+
+    inOrderTraversal(root->right);
+
+}
+
+//TC:O(n)
+void postOrderTraversal(Node* root)
+{
+    if(root==NULL)
+    {
+        return;
+    }
     
-    Node* root=new Node(a[idx]);
-
-    root->left=buildTree(a);
-    root->right=buildTree(a);
-
-    return root;
-}
-
-// pre order Traversal(root,left,right)  
-void pretravel(Node* root)
-{
-
-    if(root==NULL)
-    {
-        return;
-    }
-
-    cout<<root->data<<endl;
-    pretravel(root->left);
-    pretravel(root->right);
+    postOrderTraversal(root->left);
+    postOrderTraversal(root->right);
+    cout<<root->data<<" ";
 
 }
 
-//Inorder Traversal(left,root,right)
-void Intravel(Node* root)
-{
-
-    if(root==NULL)
-    {
-        return;
-    }
-
-    Intravel(root->left);
-    cout<<root->data<<endl;
-    Intravel(root->right);
-
-}
-
-//Postorder Traversal(left,right,root)
-void Posttravel(Node* root)
-{
-
-    if(root==NULL)
-    {
-        return;
-    }
-
-    Posttravel(root->left);
-    Posttravel(root->right);
-    cout<<root->data<<endl;
-
-}
-
-//Level Order Traversal
-void Leveltravel(Node* root)
+static int levelCount=0;
+//TC:O(n)
+void levelOrderTraversal(Node* root)
 {
     queue<Node*> q;
+
     q.push(root);
     q.push(NULL);
-    while(q.size()>0)
+    while(!q.empty())
     {
-        Node* t=q.front();
-        q.pop();
-        if(t==NULL)
+        Node* front=q.front();
+        if(q.front()==NULL)
         {
-            if(!q.empty())
+            levelCount=levelCount+1;
+            q.pop();
+            cout<<endl;
+            if(q.empty())
             {
-                cout<<"\n";
-                q.push(NULL);
-                continue;
-            }else{
                 break;
-            }  
+            }
+            q.push(NULL);
+            continue;
+        }
+        cout<<front->data<<" ";
+        if(front->left!=NULL)
+        {
+            q.push(front->left);
+        }
+        if(front->right!=NULL)
+        {
+            q.push(front->right);
         }
 
-         cout<<t->data<<" ";
-        if(t->left!=NULL)
-        {
-            q.push((t->left));
-        }
-        if(t->right!=NULL)
-        {
-            q.push((t->right));
-        }
-        
+        q.pop();
     }
-}
 
+}
 
 int main()
 {
-    vector<int> a={1,2,-1,-1,3,4,-1,-1,5,-1,-1};
-
-    Node* root=buildTree(a);//TC=O(n)
-
-    pretravel(root);//TC=O(n)
+    vector<int> preorder = {1, 2, -1, -1, 3, 4, -1, -1, 5, -1, -1};
+    int i=-1;
+    Node* root=create(preorder,&i);
     cout<<endl;
-    Intravel(root);//TC=O(n)
+    preOrderTraversal(root);
     cout<<endl;
-    Posttravel(root);//TC=O(n)
+    inOrderTraversal(root);
     cout<<endl;
-    Leveltravel(root);
+    postOrderTraversal(root);
+    cout<<endl;
+    levelOrderTraversal(root);
+    cout<<endl;
+    cout<<levelCount<<endl;
     return 0;
-    
 }
