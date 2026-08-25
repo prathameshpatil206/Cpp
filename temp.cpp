@@ -1,54 +1,68 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-// Optimized palindrome check using two pointers (no extra memory)
-bool is_palindrome(const string& s, int start, int end) {
-    while (start < end) {
-        if (s[start] != s[end]) {
-            return false;
+
+//TC:O((V+E)*logV)
+//SC:O(V+E)
+class Edge
+{
+public:
+    int neigh;
+    int weight;
+
+
+    Edge(int n,int w)
+    {
+        this->neigh=n;
+        this->weight=w;
+    }
+};
+
+struct info{
+    int weight;
+    int node;
+
+    bool operator>(const info& other) const
+    {
+        return weight>other.weight;
+    }
+};
+
+int main()
+{
+    vector<vector<Edge>> g(3);
+
+    g[0].push_back(Edge(1,2));
+    g[0].push_back(Edge(2,5));
+
+    g[2].push_back(Edge(1,-10));
+
+    vector<int> dist(3,INT_MAX);
+    priority_queue<info,vector<info>,greater<info>> pq;
+    dist[0]=0;
+    pq.push({0,0});
+
+    while(!pq.empty())
+    {
+        info curr=pq.top();
+        pq.pop();
+
+        for(Edge neighbr:g[curr.node])
+        {
+            int dist_from_curr=dist[curr.node]+neighbr.weight;
+            if(dist_from_curr<dist[neighbr.neigh])
+            {
+                dist[neighbr.neigh]=dist_from_curr;
+                pq.push({dist[curr.node]+neighbr.weight,neighbr.neigh});
+            }
         }
-        start++;
-        end--;
-    }
-    return true;
-}
 
-// Pass original string by reference, use 'start' to track position
-void partition(const string& s, int start, vector<string>& parts, vector<vector<string>>& ans) {
-    // Base Case: If we have reached the end of the string, we found a valid partition
-    if (start == s.size()) {
-        ans.push_back(parts);
-        return;
     }
 
-    // Loop through the remaining string
-    for (int i = start; i < s.size(); i++) {
-        // If the substring from 'start' to 'i' is a palindrome
-        if (is_palindrome(s, start, i)) {
-            // Add it to our current path
-            parts.push_back(s.substr(start, i - start + 1));
-            
-            // Recurse for the remaining part of the string
-            partition(s, i + 1, parts, ans);
-            
-            // Backtrack
-            parts.pop_back();
-        }
+    for(int i=0;i<dist.size();i++)
+    {
+        cout<<i<<" --> "<<dist[i]<<endl;
     }
-}
 
-int main() {
-    string s = "ababa";
-    vector<string> parts;
-    vector<vector<string>> ans;
-    
-    partition(s, 0, parts, ans);
-
-    for (auto v : ans) {
-        for (auto ele : v) {
-            cout << ele << " ";
-        }
-        cout << endl;
-    }
     return 0;
 }
