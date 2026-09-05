@@ -1,0 +1,8 @@
+# Executable files
+*.exe
+
+# Configuration files
+*.ini
+
+# Text files
+*.txt
