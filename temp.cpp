@@ -1,68 +1,8 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-
-//TC:O((V+E)*logV)
-//SC:O(V+E)
-class Edge
-{
-public:
-    int neigh;
-    int weight;
-
-
-    Edge(int n,int w)
-    {
-        this->neigh=n;
-        this->weight=w;
-    }
-};
-
-struct info{
-    int weight;
-    int node;
-
-    bool operator>(const info& other) const
-    {
-        return weight>other.weight;
-    }
-};
-
 int main()
 {
-    vector<vector<Edge>> g(3);
-
-    g[0].push_back(Edge(1,2));
-    g[0].push_back(Edge(2,5));
-
-    g[2].push_back(Edge(1,-10));
-
-    vector<int> dist(3,INT_MAX);
-    priority_queue<info,vector<info>,greater<info>> pq;
-    dist[0]=0;
-    pq.push({0,0});
-
-    while(!pq.empty())
-    {
-        info curr=pq.top();
-        pq.pop();
-
-        for(Edge neighbr:g[curr.node])
-        {
-            int dist_from_curr=dist[curr.node]+neighbr.weight;
-            if(dist_from_curr<dist[neighbr.neigh])
-            {
-                dist[neighbr.neigh]=dist_from_curr;
-                pq.push({dist[curr.node]+neighbr.weight,neighbr.neigh});
-            }
-        }
-
-    }
-
-    for(int i=0;i<dist.size();i++)
-    {
-        cout<<i<<" --> "<<dist[i]<<endl;
-    }
-
+    cout<<"Helloooooooo";
     return 0;
 }
